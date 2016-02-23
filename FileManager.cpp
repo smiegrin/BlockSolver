@@ -29,6 +29,7 @@ std::string FileManager::chooseFile() {
 //    {
 //        // Do something usefull with the filename stored in szFileName 
 //    }
+//}
 
 Block* FileManager::loadBlock() {
 	std::string filename = chooseFile();
@@ -40,6 +41,7 @@ Block* FileManager::loadBlock() {
 	stream >> x;
 	stream >> y;
 	stream >> z;
+	stream.close();
 
 	return new Block(x,y,z);
 }

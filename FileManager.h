@@ -5,12 +5,12 @@
 #include <Windows.h>
 #include "Block.h"
 
-static class FileManager {
+class FileManager {
 private:
-	std::string chooseFile();
+	static std::string chooseFile();
 
 public:
-	Block* loadBlock();
+	static Block* loadBlock();
 
 };
 
