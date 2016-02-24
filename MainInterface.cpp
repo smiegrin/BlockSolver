@@ -4,13 +4,20 @@
 
 MainInterface::MainInterface() {
 	window = new sf::RenderWindow(sf::VideoMode(800,500), "Block Solver", sf::Style::Titlebar | sf::Style::Close);
-	shape1 = new sf::CircleShape(100.f);
-	shape1->setFillColor(sf::Color::Green);
+	loadButton = new sf::RectangleShape(sf::Vector2f(100,50));
+	loadButton->setPosition(sf::Vector2f(450,150));
+	loadButton->setFillColor(sf::Color::Green);
 }
 
 void MainInterface::manageClick(int x, int y) {
 	Block *block = 0;
-	if (x < 200 && y < 200) block = FileManager::loadBlock();
+	
+	if (x > loadButton->getPosition().x &&
+		x < loadButton->getPosition().x + loadButton->getSize().x &&
+		y > loadButton->getPosition().y &&
+		y < loadButton->getPosition().y + loadButton->getSize().y) 
+		block = FileManager::loadBlock();
+
 	if (block != 0) std::cout << block->getDepth() << " " << block->getHeight() << " " << block->getDepth() << std::endl;
 }
 
@@ -23,7 +30,7 @@ void MainInterface::run() {
 		}
 
 		window->clear();
-		window->draw(*shape1);
+		window->draw(*loadButton);
 		window->display();
 	}
 }

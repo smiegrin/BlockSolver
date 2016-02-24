@@ -6,7 +6,7 @@
 class MainInterface {
 private:
 	sf::RenderWindow *window;
-	sf::CircleShape *shape1;
+	sf::RectangleShape *loadButton;
 
 	void manageClick(int, int);
 public:
