@@ -1,0 +1,23 @@
+Feb 26 2016 ---------------------------
+So, I lost the original copy of this project on my old thumb drive, but I've
+been able to catch up easily with what I had before the loss. The window stays
+open now, and the loading function uses the windows Choose file dialog now.
+
+Today, I had a breakthrough with the use of an array to represent a block.
+Turns out, if the block has axis X Y and Z in that order, to rotate the block
+(that is, rotate the array so it represents a rotation) one simply has to
+swap the order of two axis and change a sign overall (x y z -> -y x z) or
+change the sign of two axis (-x -y z). Furthermore, a mirrored block is made
+by swaping two axis WITHOUT a sign change (xyz -> yxz) or making a sign change
+without an order swap (xyz -> -xyz). This ALSO means that Mirroring the block
+twice in two different ways leads to a regular rotation (mirror swap + mirror
+sign = rotate swap&sign).
+
+Now I just need to find out how to integrate all this into a struct...
+
+March 1 2016 ---------------------------
+Developments are coming on schedule so far. I have begun puting together the
+system for how the block works. I'm going to go on to working on the solver
+itself now. I think the hardest part will be integrating the rotation of the
+blocks. I suspect I can utilize pointers to direct the space reading imple-
+mentation accross the array somehow.

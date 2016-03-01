@@ -4,6 +4,8 @@
 
 MainInterface::MainInterface() {
 	window = new sf::RenderWindow(sf::VideoMode(800,500), "Block Solver", sf::Style::Titlebar | sf::Style::Close);
+	
+	//make "Load" button
 	loadButton = new sf::RectangleShape(sf::Vector2f(100,50));
 	loadButton->setPosition(sf::Vector2f(450,150));
 	loadButton->setFillColor(sf::Color::Green);
@@ -18,7 +20,7 @@ void MainInterface::manageClick(int x, int y) {
 		y < loadButton->getPosition().y + loadButton->getSize().y) 
 		block = FileManager::loadBlock();
 
-	if (block != 0) std::cout << block->getDepth() << " " << block->getHeight() << " " << block->getDepth() << std::endl;
+	if (block != 0) block->printInfo();
 }
 
 void MainInterface::run() {

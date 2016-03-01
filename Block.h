@@ -10,12 +10,13 @@ private:
 	int x;
 	int y;
 	int z;
-	int* space;
-	int rotation;
+	int* rotations;
+	int currentRotation;
 	int maxRotation;
+	bool* space;
 public:
 	Block();
-	Block(int,int,int);
+	Block(int,int,int,int,int*,bool*);
 
 	int getWidth();
 	int getHeight();
@@ -27,6 +28,8 @@ public:
 	int getMaxRotation();
 
 	int rotate();
+
+	void printInfo();
 	
 };
 
