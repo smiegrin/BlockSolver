@@ -21,3 +21,24 @@ system for how the block works. I'm going to go on to working on the solver
 itself now. I think the hardest part will be integrating the rotation of the
 blocks. I suspect I can utilize pointers to direct the space reading imple-
 mentation accross the array somehow.
+
+March 4 --------------------------------
+Things have gotton tricky REALLY quick. I have to find a way to simulate the 
+rotation of different blocks, and I have a inkiling of a solution, but...
+it's not a simple one. I basically have  a list of the 48 rotation possibilities
+in a coded list that the program checks every time the block gets rotated.
+here, it can set the rotated dimensions. I have it set up at the moment
+where a negative axis is represented by a negative "prime" dimension.
+(so x -z  y would yeild widthPrime = width, heightPrime = -depth, and
+depthPrime = height). The thing I'm trying to find out now is how to use
+the altered space by puting the original space block into order. I'm pretty
+stumped, so I'm going to sleep on it.
+
+March 5 -------------------------------
+BOOM! solution. (kind of). I have set it up where it literally runs through
+all 48 possibilities and takes note of what each configuration entails for
+the axis of the block. It then uses that axis configuration to copy from
+the standard block into a copy using an altered order. Right now, it's SUPER
+wordy. (I think the log will give an exact number, but It was CLEARLY past
+300 lines of pure switch code.) Hard coding the other 47 configurations
+will be hard, but it should be straitforward at least.

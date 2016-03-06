@@ -7,7 +7,7 @@ MainInterface::MainInterface() {
 	
 	//make "Load" button
 	loadButton = new sf::RectangleShape(sf::Vector2f(100,50));
-	loadButton->setPosition(sf::Vector2f(450,150));
+	loadButton->setPosition(sf::Vector2f(450,300));
 	loadButton->setFillColor(sf::Color::Green);
 }
 
