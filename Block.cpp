@@ -156,81 +156,81 @@ void Block::updatePrime() {
 		break;
 	case 16:
 		wMark = 1;
-		hMark =5;
+		hMark =6;
 		dMark = 3;
 		break;
 	case 17:
 		wMark = 1;
-		hMark =6;
+		hMark =5;
 		dMark = 3;
 		break;
 	case 18:
 		wMark = 2;
-		hMark =6;
+		hMark =5;
 		dMark = 3;
 		break;
 	case 19:
 		wMark = 2;
-		hMark =5;
+		hMark =6;
 		dMark = 3;
 		break;
 	case 20:
-		wMark = 5;
+		wMark = 6;
 		hMark =2;
 		dMark = 3;
 		break;
 	case 21:
-		wMark = 6;
+		wMark = 5;
 		hMark =2;
 		dMark = 3;
 		break;
 	case 22:
-		wMark = 6;
+		wMark = 5;
 		hMark =1;
 		dMark = 3;
 		break;
 	case 23:
-		wMark = 5;
+		wMark = 6;
 		hMark =1;
 		dMark = 3;
 		break;
 	case 24:
 		wMark = 5;
-		hMark =1;
+		hMark =2;
 		dMark = 4;
 		break;
 	case 25:
 		wMark = 5;
-		hMark =2;
+		hMark =1;
 		dMark = 4;
 		break;
 	case 26:
 		wMark = 6;
-		hMark =2;
+		hMark =1;
 		dMark = 4;
 		break;
 	case 27:
 		wMark = 6;
-		hMark =1;
+		hMark =2;
 		dMark = 4;
 		break;
 	case 28:
-		wMark = 1;
+		wMark = 2;
 		hMark =6;
 		dMark = 4;
 		break;
 	case 29:
-		wMark = 2;
+		wMark = 1;
 		hMark =6;
 		dMark = 4;
 		break;
 	case 30:
-		wMark = 2;
+		wMark = 1;
 		hMark =5;
 		dMark = 4;
 		break;
 	case 31:
-		wMark = 1;
+		wMark = 2;
 		hMark =5;
 		dMark = 4;
 		break;
@@ -316,6 +316,41 @@ void Block::updatePrime() {
 		break;
 	}
 
+	//#############################
+	int w = 0;
+	int v = 0;
+	int u = 0;
+	int* dw = 0;
+	int* dv = 0;
+	int* du = 0;
+
+	if(wMark == 1 || wMark == 2) widthPrime = width, du = &u;
+	if(wMark == 3 || wMark == 4) widthPrime = height, du = &v;
+	if(wMark == 5 || wMark == 6) widthPrime = depth, du = &w;
+	
+	if(hMark == 1 || hMark == 2) heightPrime = width, dv = &u;
+	if(hMark == 3 || hMark == 4) heightPrime = height, dv = &v;
+	if(hMark == 5 || hMark == 6) heightPrime = depth, dv = &w;
+	
+	if(dMark == 1 || dMark == 2) depthPrime = width, dw = &u;
+	if(dMark == 3 || dMark == 4) depthPrime = height, dw = &v;
+	if(dMark == 5 || dMark == 6) depthPrime = depth, dw = &w;
+
+	int spaceID;
+	for(w = 0; w < depth; w++) {
+		for(v = 0; v < height; v++) {
+			for(u = 0; u < width; u++) {
+				spaceID = 0;
+				spaceID += (wMark & 1) ? *du : (widthPrime - 1 - *du);
+				spaceID += widthPrime*((hMark & 1) ? *dv : (heightPrime - 1 - *dv));
+				spaceID += heightPrime*widthPrime*((dMark & 1) ? *dw : (depthPrime - 1 - *dw));
+				*(spacePrime + spaceID) = *(space + u + width*v + width*height*w);
+			}
+		}
+	}
+
+	//#############################
+/*
 	switch(dMark) {
 	case 1:
 		switch(hMark) {
@@ -813,48 +848,32 @@ void Block::updatePrime() {
 //				}
 				break;
 			case 4:
-//				for(int w = 0; w < depth; w++) {
-//					for(int v = 0; v < height; v++) {
-//						for(int u = 0; u < width; u++) {
-//							*(spacePrime + u  v  w ) = *(space + u + v*width + w*width*height);
-//						}
-//					}
-//				}
+				widthPrime = height;
+				heightPrime = width;
+				depthPrime = depth;
+				for(int w = 0; w < depth; w++) {
+					for(int v = 0; v < height; v++) {
+						for(int u = 0; u < width; u++) {
+							*(spacePrime + (widthPrime-1-v) + widthPrime*(widthPrime-1-u) + widthPrime*heightPrime*(depthPrime-1-w)) = *(space + u + v*width + w*width*height);
+						}
+					}
+				}
 				break;
 			}
 			break;
 		case 3:
 			switch(wMark) {
 			case 1:
-//				for(int w = 0; w < depth; w++) {
-//					for(int v = 0; v < height; v++) {
-//						for(int u = 0; u < width; u++) {
-//							*(spacePrime + u  v  w ) = *(space + u + v*width + w*width*height);
-//						}
-//					}
-//				}
-				break;
-			case 2:
-//				for(int w = 0; w < depth; w++) {
-//					for(int v = 0; v < height; v++) {
-//						for(int u = 0; u < width; u++) {
-//							*(spacePrime + u  v  w ) = *(space + u + v*width + w*width*height);
-//						}
-//					}
-//				}
-				break;
-			}
-			break;
-		case 4:
-			switch(wMark) {
-			case 1:
-//				for(int w = 0; w < depth; w++) {
-//					for(int v = 0; v < height; v++) {
-//						for(int u = 0; u < width; u++) {
-//							*(spacePrime + u  v  w ) = *(space + u + v*width + w*width*height);
-//						}
-//					}
-//				}
+				widthPrime = width;
+				heightPrime = height;
+				depthPrime = depth;
+				for(int w = 0; w < depth; w++) {
+					for(int v = 0; v < height; v++) {
+						for(int u = 0; u < width; u++) {
+							*(spacePrime + (u) + widthPrime*v + widthPrime*heightPrime*(depthPrime-1-w) ) = *(space + u + v*width + w*width*height);
+						}
+					}
+				}
 				break;
 			case 2:
 				widthPrime = width;
@@ -863,7 +882,35 @@ void Block::updatePrime() {
 				for(int w = 0; w < depth; w++) {
 					for(int v = 0; v < height; v++) {
 						for(int u = 0; u < width; u++) {
-							*(spacePrime + (widthPrime-1-u) + widthPrime*(heightPrime-1-v) + widthPrime*heightPrime*(depth-1-w)) = *(space + u + v*width + w*width*height);
+							*(spacePrime + (widthPrime-1-u) + widthPrime*v + widthPrime*heightPrime*(depthPrime-1-w) ) = *(space + u + v*width + w*width*height);
+						}
+					}
+				}
+				break;
+			}
+			break;
+		case 4:
+			switch(wMark) {
+			case 1:
+				widthPrime = width;
+				heightPrime = height;
+				depthPrime = depth;
+				for(int w = 0; w < depth; w++) {
+					for(int v = 0; v < height; v++) {
+						for(int u = 0; u < width; u++) {
+							*(spacePrime + u  + widthPrime*(heightPrime-1-v)  + widthPrime*heightPrime*(depth-1-w)) = *(space + u + v*width + w*width*height);
+						}
+					}
+				}
+				break;
+			case 2:
+				widthPrime = width;
+				heightPrime = height;
+				depthPrime = depth;
+				for(int w = 0; w < depth; w++) {
+					for(int v = 0; v < height; v++) {
+						for(int u = 0; u < width; u++) {
+							*(spacePrime + (widthPrime-1-u) + widthPrime*(heightPrime-1-v) + widthPrime*heightPrime*(depthPrime-1-w)) = *(space + u + v*width + w*width*height);
 						}
 					}
 				}
@@ -873,9 +920,9 @@ void Block::updatePrime() {
 		}
 		break;
 	}
-	
+*/	
 	std::cout << std::endl << "Space:" << std::endl;
-	int spaceID = 0;
+	spaceID = 0;
 	for (int w = 0; w < depthPrime; w++) {
 		for(int v = 0; v < heightPrime; v++) {
 			for(int u = 0; u < widthPrime; u++) {

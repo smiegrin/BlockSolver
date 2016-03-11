@@ -42,3 +42,16 @@ the standard block into a copy using an altered order. Right now, it's SUPER
 wordy. (I think the log will give an exact number, but It was CLEARLY past
 300 lines of pure switch code.) Hard coding the other 47 configurations
 will be hard, but it should be straitforward at least.
+
+March 7 -------------------------------
+Yeah, ok, I'm not going to code all that. I think I found an alternative
+though (check the change logs). I'm trying to test to see if it's really
+doing what I want now, though.
+
+March 10 ------------------------------
+Things are going slow due to other work that needs to get done for school,
+but I finally got a good piece of time for working with the block rotation
+tester. It was a succes in producing every rotation/mirror possibility,
+but there was a bug in the way I had arranged the axis for the rotations
+#16-31. I did a switch of each mirrored set with a regular set, but it
+was easy to switch back. I just hope I changed the documentation correctly.
