@@ -6,7 +6,11 @@
 class MainInterface {
 private:
 	sf::RenderWindow *window;
+
 	sf::RectangleShape *loadButton;
+	sf::RectangleShape *testBlockButton;
+
+	sf::Font font;
 
 	void manageClick(int, int);
 public:

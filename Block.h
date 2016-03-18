@@ -36,7 +36,7 @@ public:
 	bool colAt(int,int,int);
 
 	int rotate();
-	void setCoordinate(int,int,int);
+	void setCoordinates(int,int,int);
 
 	void printInfo();
 	

@@ -7,18 +7,29 @@ MainInterface::MainInterface() {
 	
 	//make "Load" button
 	loadButton = new sf::RectangleShape(sf::Vector2f(100,50));
-	loadButton->setPosition(sf::Vector2f(450,300));
+	loadButton->setPosition(sf::Vector2f(700,450));
 	loadButton->setFillColor(sf::Color::Green);
+
+	//make "Test Block" button
+	testBlockButton = new sf::RectangleShape(sf::Vector2f(100,50));
+	testBlockButton->setPosition(sf::Vector2f(600,450));
+	testBlockButton->setFillColor(sf::Color::Color(127,127,127,255));
 }
 
 void MainInterface::manageClick(int x, int y) {
 	Block *block = 0;
 	
-	if (x > loadButton->getPosition().x &&
-		x < loadButton->getPosition().x + loadButton->getSize().x &&
-		y > loadButton->getPosition().y &&
-		y < loadButton->getPosition().y + loadButton->getSize().y) 
-		block = FileManager::loadBlock();
+	if (x > testBlockButton->getPosition().x &&
+		x < testBlockButton->getPosition().x + testBlockButton->getSize().x &&
+		y > testBlockButton->getPosition().y &&
+		y < testBlockButton->getPosition().y + testBlockButton->getSize().y)
+	{
+		Block* block = FileManager::loadBlock();
+		do {
+			block->printInfo();
+			system("pause");
+		} while (block->rotate() != 0);
+	}
 
 	if (block != 0) block->printInfo();
 }
@@ -31,8 +42,9 @@ void MainInterface::run() {
 			if (event.type == sf::Event::MouseButtonPressed) manageClick(event.mouseButton.x, event.mouseButton.y);
 		}
 
-		window->clear();
+		window->clear(sf::Color(63,63,63,255));
 		window->draw(*loadButton);
+		window->draw(*testBlockButton);
 		window->display();
 	}
 }

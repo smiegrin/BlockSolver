@@ -31,7 +31,15 @@ int Block::getRotation() { return currentRotation; }
 int Block::getMaxRotation() { return maxRotation; }
 
 bool Block::colAt(int xCoord, int yCoord, int zCoord) {
-	return true;
+	
+	if(xCoord > x + widthPrime || xCoord < x ||
+		yCoord > y + heightPrime || yCoord < y ||
+		zCoord > z + depthPrime || zCoord < z) return false;
+		
+	else if (*(spacePrime + (xCoord - x)
+		+ widthPrime*(yCoord - y)
+		+ widthPrime*heightPrime*(zCoord - z))) 
+			return true;
 }
 
 int Block::rotate() {
@@ -54,10 +62,10 @@ void Block::printInfo() {
 	}
 	std::cout << std::endl << "Space:" << std::endl;
 	int spaceID = 0;
-	for (int w = 0; w < depth; w++) {
-		for(int v = 0; v < height; v++) {
-			for(int u = 0; u < width; u++) {
-				if(*(space + spaceID) == true) std::cout << "#";
+	for (int w = 0; w < depthPrime; w++) {
+		for(int v = 0; v < heightPrime; v++) {
+			for(int u = 0; u < widthPrime; u++) {
+				if(*(spacePrime + spaceID) == true) std::cout << "#";
 				else std::cout << " ";
 				spaceID++;
 			}
@@ -67,6 +75,12 @@ void Block::printInfo() {
 	}
 
 	//for (int i = 0; i < width*height*depth; i++) std::cout << *(space + i) << std::endl;
+}
+
+void Block::setCoordinates(int xCoord, int yCoord, int zCoord) {
+	x = xCoord;
+	y = yCoord;
+	z = zCoord;
 }
 
 void Block::updatePrime() {
