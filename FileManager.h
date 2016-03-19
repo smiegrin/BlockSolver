@@ -2,8 +2,10 @@
 #define FILEMANAGER_H
 #include <sstream>
 #include <fstream>
+#include <string>
 #include <Windows.h>
 #include "Block.h"
+#include "Solver.h"
 
 class FileManager {
 private:
@@ -11,6 +13,8 @@ private:
 
 public:
 	static Block* loadBlock();
+	static Block* loadBlock(std::string);
+	static Solver* loadPuzzle();
 
 };
 
