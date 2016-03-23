@@ -10,10 +10,12 @@ class Solver {
 	Block* blocks;
 	int currentBlock;
 	int numOfBlocks;
+	bool exhausted;
 
 public:
 	Solver(Board*, Block*, int);
 	Block* getCurrentBlock();
+	Board* getBoard();
 	void step();
 	sf::Color colorAt(int,int,int);
 };

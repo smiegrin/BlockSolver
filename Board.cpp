@@ -10,7 +10,7 @@ Board::Board(int w, int h, int d, bool* s) {
 bool Board::colAt(int x, int y, int z) {
 	if (x < 0 || x > width ||
 		y < 0 || y > height ||
-		z < 0 || z > depth) return false;
+		z < 0 || z > depth) return true;
 	return (*(space + x + width*y + width*height*z));
 }
 

@@ -5,6 +5,8 @@
 MainInterface::MainInterface() {
 	window = new sf::RenderWindow(sf::VideoMode(800,500), "Block Solver", sf::Style::Titlebar | sf::Style::Close);
 	status = WAITING;
+	zoomSize = 0;
+	solver = 0;
 
 	//make "Load" button
 	loadButton = new sf::RectangleShape(sf::Vector2f(100,50));
@@ -26,7 +28,11 @@ MainInterface::MainInterface() {
 	playPauseButton->setPosition(sf::Vector2f(400,450));
 	playPauseButton->setFillColor(sf::Color::Color(0,0,255,255));
 
-
+	//prepare Board display
+	boardSpace = new sf::RectangleShape(sf::Vector2f(0,0));
+	boardSpace->setFillColor(sf::Color::Transparent);
+	boardSpace->setOutlineColor(sf::Color::Black);
+	boardSpace->setOutlineThickness(3);
 }
 
 void MainInterface::manageClick(int x, int y) {
@@ -53,6 +59,19 @@ void MainInterface::manageClick(int x, int y) {
 		y < loadButton->getPosition().y + loadButton->getSize().y)
 	{
 		if (status != RUNNING) solver = FileManager::loadPuzzle();
+		if (solver != NULL) {
+			//set up new display mode
+			Board* board = solver->getBoard();
+			int bWidth = board->getWidth();
+			int bHeight = board->getHeight();
+			int bDepth = board->getDepth();
+			if (bWidth < bHeight) {
+				zoomSize = 400/bHeight;
+			}
+			else zoomSize = 400/bWidth;
+			boardSpace->setSize(sf::Vector2f(bWidth*zoomSize, bHeight*zoomSize));
+			status = PAUSED;
+		}
 	}
 
 	//step solver
@@ -61,7 +80,7 @@ void MainInterface::manageClick(int x, int y) {
 		y > stepButton->getPosition().y &&
 		y < stepButton->getPosition().y + stepButton->getSize().y)
 	{
-
+		if (status != WAITING && status != RUNNING) solver->step();
 	}
 
 	//run/stop solver
@@ -70,7 +89,12 @@ void MainInterface::manageClick(int x, int y) {
 		y > playPauseButton->getPosition().y &&
 		y < playPauseButton->getPosition().y + playPauseButton->getSize().y)
 	{
-
+		if (status == RUNNING) {
+			status = PAUSED;
+		}
+		if (status == PAUSED) {
+			status = RUNNING;
+		}
 	}
 }
 
@@ -83,6 +107,22 @@ void MainInterface::run() {
 		}
 
 		window->clear(sf::Color(63,63,63,255));
+		window->draw(*boardSpace);
+		//draw board
+		if (solver != 0) {
+		int v = solver->getBoard()->getHeight() - 1;
+			for (v; v >= 0; v--) {
+				int u = solver->getBoard()->getWidth() - 1;
+				for (u; u >= 0; u--) {
+					sf::RectangleShape temp = sf::RectangleShape(sf::Vector2f(zoomSize,zoomSize));
+					temp.setFillColor(solver->colorAt(u,v,0));
+					temp.setOutlineColor(sf::Color::Black);
+					temp.setOutlineThickness(3);
+					temp.setPosition(u*zoomSize, v*zoomSize);
+					window->draw(temp);
+				}
+			}
+		}
 		window->draw(*loadButton);
 		window->draw(*testBlockButton);
 		window->draw(*stepButton);

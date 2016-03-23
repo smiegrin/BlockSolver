@@ -16,7 +16,6 @@ private:
 	int* rotations;
 	int currentRotation;
 	int maxRotation;
-	bool* axisConfig;
 	bool* space;
 	bool* spacePrime;
 
