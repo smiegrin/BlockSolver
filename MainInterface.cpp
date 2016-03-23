@@ -92,7 +92,7 @@ void MainInterface::manageClick(int x, int y) {
 		if (status == RUNNING) {
 			status = PAUSED;
 		}
-		if (status == PAUSED) {
+		else if (status == PAUSED) {
 			status = RUNNING;
 		}
 	}
@@ -106,6 +106,8 @@ void MainInterface::run() {
 			if (event.type == sf::Event::MouseButtonPressed) manageClick(event.mouseButton.x, event.mouseButton.y);
 		}
 
+		if (status == RUNNING) solver->step();
+
 		window->clear(sf::Color(63,63,63,255));
 		window->draw(*boardSpace);
 		//draw board
@@ -117,7 +119,7 @@ void MainInterface::run() {
 					sf::RectangleShape temp = sf::RectangleShape(sf::Vector2f(zoomSize,zoomSize));
 					temp.setFillColor(solver->colorAt(u,v,0));
 					temp.setOutlineColor(sf::Color::Black);
-					temp.setOutlineThickness(3);
+					temp.setOutlineThickness(1);
 					temp.setPosition(u*zoomSize, v*zoomSize);
 					window->draw(temp);
 				}

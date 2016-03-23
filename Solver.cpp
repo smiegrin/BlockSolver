@@ -16,7 +16,7 @@ Board* Solver::getBoard() { return board; }
 sf::Color Solver::colorAt(int x, int y, int z) {
 	if (board->colAt(x,y,z)) return sf::Color::Color(0,0,0,255);
 	else if ((blocks + currentBlock)->colAt(x,y,z)) return sf::Color::Color(255,0,0,255);
-	else for (int i = currentBlock - 1; i >= 0; i--) if ((blocks + i)->colAt(x,y,z)) return sf::Color::Color(0,0,255,255);
+	else for (int i = currentBlock - 1; i >= 0; i--) if ((blocks + i)->colAt(x,y,z)) return sf::Color::Color(0,255-(50*i),(50*i + 50)%255,255);
 	return sf::Color::Color(0,0,0,0);
 }
 
@@ -25,6 +25,10 @@ void Solver::step() {
 	if(currentBlock < numOfBlocks - 1) currentBlock++;
 	else {
 		std::cout << "Solution found\n";
+		(blocks + currentBlock)->setCoordinates(
+			(blocks + currentBlock)->getX() + 1,
+			(blocks + currentBlock)->getY(),
+			(blocks + currentBlock)->getZ());
 	}
 	bool conflict = false;
 	do {
@@ -42,7 +46,7 @@ void Solver::step() {
 					for (int i = currentBlock-1; i >= 0; i--) {
 						if (conflict) break;
 						if ((blocks + currentBlock)->colAt(u + x,v + y,w + z) &&
-							(blocks + i)->colAt(u + x,v + y,w + z))
+							((blocks + i)->colAt(u + x,v + y,w + z) || board->colAt(u+x,v+y,w+z)))
 							conflict = true;
 					}
 				}
