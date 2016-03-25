@@ -55,3 +55,25 @@ tester. It was a succes in producing every rotation/mirror possibility,
 but there was a bug in the way I had arranged the axis for the rotations
 #16-31. I did a switch of each mirrored set with a regular set, but it
 was easy to switch back. I just hope I changed the documentation correctly.
+
+March 25 ------------------------------
+Wow, missed a good chuck of time here! Good news, though, things are going
+well! I have successfluly constructed a form of display and puzzle reading
+implementation, though both are fairly rudimentary and in dire need of
+improvement sometime in the future.
+The other big thing that I have accopmlished is important to the purpose
+of the project, if in a bit of a frustrating way. I have completed a solving
+algorythm that can successfully find solutions. The only problem is that
+with a 13 block puzzle, even 36 STRAIGT HOURS of computation wasn't enough
+to get even one solution. I expect this is because my estimate would put a
+start-to finish executon at 30 permutations a second into the range of 10
+days of straight executon. That is obviously too long.
+There is another algorythm that I have in mind, but it will be far more
+complicated to implement. The key would be to draw focus from placing every
+block to filling every space. In this way, permutations can "spin" at shalower
+situations (such as 2 or 3 blocks) rather than spining at 7 or 8 when it's
+obvious that a solution doesn't exist because of block 3. In this way, false
+permutations can get logically "Chopped" in larger chunks. One disadvantage
+of the second solving algorythm is that it will be forced to operate on the
+assumption that each space must be filled. Although it is a common assumption
+for these kind of puzzles, it's still a limitation.

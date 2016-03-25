@@ -99,6 +99,7 @@ void MainInterface::manageClick(int x, int y) {
 }
 
 void MainInterface::run() {
+	int reps = 0;
 	while (window->isOpen()) {
 		sf::Event event;
 		while (window->pollEvent(event)) {
@@ -106,13 +107,13 @@ void MainInterface::run() {
 			if (event.type == sf::Event::MouseButtonPressed) manageClick(event.mouseButton.x, event.mouseButton.y);
 		}
 
-		if (status == RUNNING) solver->step();
+		if (status == RUNNING) solver->step(), reps++;
 
 		window->clear(sf::Color(63,63,63,255));
 		window->draw(*boardSpace);
 		//draw board
 		if (solver != 0) {
-		int v = solver->getBoard()->getHeight() - 1;
+			int v = solver->getBoard()->getHeight() - 1;
 			for (v; v >= 0; v--) {
 				int u = solver->getBoard()->getWidth() - 1;
 				for (u; u >= 0; u--) {
@@ -130,5 +131,6 @@ void MainInterface::run() {
 		window->draw(*stepButton);
 		window->draw(*playPauseButton);
 		window->display();
+		//std::cout<<reps<<std::endl;
 	}
 }

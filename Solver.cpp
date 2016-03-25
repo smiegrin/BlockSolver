@@ -21,6 +21,7 @@ sf::Color Solver::colorAt(int x, int y, int z) {
 }
 
 void Solver::step() {
+	//std::cout <<currentBlock<<std::endl;
 	if (exhausted) return;
 	if(currentBlock < numOfBlocks - 1) currentBlock++;
 	else {
@@ -48,6 +49,7 @@ void Solver::step() {
 						if ((blocks + currentBlock)->colAt(u + x,v + y,w + z) &&
 							((blocks + i)->colAt(u + x,v + y,w + z) || board->colAt(u+x,v+y,w+z)))
 							conflict = true;
+						if (currentBlock == 0 && blocks->colAt(u+x,v+y,w+z) && board->colAt(u+x,v+y,w+z)) conflict = true;
 					}
 				}
 			}
