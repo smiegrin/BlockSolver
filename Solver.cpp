@@ -5,24 +5,47 @@ Solver::Solver(Board* bo, Block* bl, int n) {
 	board = bo;
 	blocks = bl;
 	numOfBlocks = n;
-	currentBlock = 0;
+	usedBlocks = new bool[n];
+	for(int i = 0; i < n; i++) *(usedBlocks + i) = false;
+	currentSpace = 0;
 	exhausted = false;
 }
 
-Block* Solver::getCurrentBlock() { return blocks + currentBlock; }
+int Solver::getCurrentSpace() { return currentSpace; }
 
 Board* Solver::getBoard() { return board; }
 
 sf::Color Solver::colorAt(int x, int y, int z) {
-	if (board->colAt(x,y,z)) return sf::Color::Color(0,0,0,255);
-	else if ((blocks + currentBlock)->colAt(x,y,z)) return sf::Color::Color(255,0,0,255);
-	else for (int i = currentBlock - 1; i >= 0; i--) if ((blocks + i)->colAt(x,y,z)) return sf::Color::Color(0,255-(50*i),(50*i + 50)%255,255);
+
 	return sf::Color::Color(0,0,0,0);
 }
 
 void Solver::step() {
-	//std::cout <<currentBlock<<std::endl;
 	if (exhausted) return;
+	int u,v,w = 0;
+
+	//advance to empty space
+	bool found = true;
+	do {
+		u = currentSpace % board->getWidth();
+		v = currentSpace/board->getWidth() % board->getHeight();
+		w = currentSpace/(board->getWidth() * board->getHeight());
+		for (int i = 0; i < numOfBlocks; i++) {
+			if (*(usedBlocks + i) && (blocks + i)->colAt(u,v,w)) found = false;
+		}
+		if (board->colAt(u,v,w)) found = false;
+		if (!found) currentSpace++;
+		if (currentSpace > board->getWidth() *
+			board->getHeight() *
+			board->getDepth()) {
+				std::cout << "Solution Found\n";
+				//back out of solution
+		}
+	} while (!found);
+
+	//cycle through unused blocks to fill space
+
+	/*old "Block First" algorythm
 	if(currentBlock < numOfBlocks - 1) currentBlock++;
 	else {
 		std::cout << "Solution found\n";
@@ -88,5 +111,5 @@ void Solver::step() {
 				else (blocks + currentBlock)->setCoordinates(0,0,0);
 			}
 		}
-	} while (conflict);
+	} while (conflict);*/
 }

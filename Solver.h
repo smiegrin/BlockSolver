@@ -8,13 +8,14 @@
 class Solver {
 	Board* board;
 	Block* blocks;
-	int currentBlock;
+	int currentSpace;
 	int numOfBlocks;
 	bool exhausted;
+	bool* usedBlocks;
 
 public:
 	Solver(Board*, Block*, int);
-	Block* getCurrentBlock();
+	int getCurrentSpace();
 	Board* getBoard();
 	void step();
 	sf::Color colorAt(int,int,int);
