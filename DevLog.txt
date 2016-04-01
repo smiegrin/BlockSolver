@@ -77,3 +77,24 @@ permutations can get logically "Chopped" in larger chunks. One disadvantage
 of the second solving algorythm is that it will be forced to operate on the
 assumption that each space must be filled. Although it is a common assumption
 for these kind of puzzles, it's still a limitation.
+
+April 1 -------------------------------
+I have success! Mostly, at least. The use of a space consideration in the
+algorythm has been tremendously powerful! I abandoned the idea of having
+the algorythm run entirely on a space-oriented basis; it was too difficult
+to find a place where the solver could pause long enough for the status
+to be drawn to the screen. Instead, I have merged the two notions. What
+results is that the solver still permutates every block in every position
+in every rotation one after another, but now it will check in-between each
+block placement and check that each open space on the board still has at least
+one block that can fill it without conflict. If this check fails, it will
+continue with the algorythm as if the last placed block colided with a
+filled space.
+The effect on the algorythm efficiency is TREMENDOUS!!! Before, the algorythm
+ran for 36 hours at about 30 permutations a second and found zero solutions.
+The new algorythim running on the same computer was able to find more than 30
+solutions! In a simmilar way, running at 1000 permutations per second, the first
+algorythm ran fruitless for 4 hours while the second one foud 220 solutions!
+To my dismay, however, there is a bug that has arrisen. I need to keep the
+first block from traveling off the board. Hopefuly it's not something that
+will throw off my algorythm.
