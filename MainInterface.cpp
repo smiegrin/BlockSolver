@@ -8,37 +8,44 @@ MainInterface::MainInterface() {
 	zoomSize = 0;
 	solver = 0;
 
+	textFont = sf::Font();
+	if(!textFont.loadFromFile("arial.ttf")) throw;
+
 	//make "Load" button
 	loadButton = new sf::RectangleShape(sf::Vector2f(100,50));
-	loadButton->setPosition(sf::Vector2f(700,450));
-	loadButton->setFillColor(sf::Color::Color(0,255,0,255));
+	loadButton->setPosition(sf::Vector2f(500,450));
+	loadButton->setFillColor(sf::Color::Color(127,127,127,255));
+	loadText = sf::Text("Load",textFont,30);
+	loadText.setColor(sf::Color::White);
+	loadText.setPosition(550-loadText.getGlobalBounds().width/2, 475-loadText.getGlobalBounds().height/2);
 
-	//make "Test Block" button
+	/*/make "Test Block" button
 	testBlockButton = new sf::RectangleShape(sf::Vector2f(100,50));
 	testBlockButton->setPosition(sf::Vector2f(600,450));
-	testBlockButton->setFillColor(sf::Color::Color(127,127,127,255));
+	testBlockButton->setFillColor(sf::Color::Color(127,127,127,255));*///hidden
 
 	//make "Step" button
 	stepButton = new sf::RectangleShape(sf::Vector2f(100,50));
-	stepButton->setPosition(sf::Vector2f(500,450));
-	stepButton->setFillColor(sf::Color::Color(255,255,0,255));
+	stepButton->setPosition(sf::Vector2f(350,450));
+	stepButton->setFillColor(sf::Color::Color(127,127,127,255));
+	stepText = sf::Text("Step",textFont,30);
+	stepText.setColor(sf::Color::White);
+	stepText.setPosition(400-stepText.getGlobalBounds().width/2, 475-stepText.getGlobalBounds().height/2);
 
 	//make "Play/Pause" button
 	playPauseButton = new sf::RectangleShape(sf::Vector2f(100,50));
-	playPauseButton->setPosition(sf::Vector2f(400,450));
-	playPauseButton->setFillColor(sf::Color::Color(0,0,255,255));
+	playPauseButton->setPosition(sf::Vector2f(200,450));
+	playPauseButton->setFillColor(sf::Color::Color(127,127,127,255));
+	playPauseText = sf::Text("",textFont,30);
+	playPauseText.setColor(sf::Color::White);
 
-	//prepare Board display
-	boardSpace = new sf::RectangleShape(sf::Vector2f(0,0));
-	boardSpace->setFillColor(sf::Color::Transparent);
-	boardSpace->setOutlineColor(sf::Color::Black);
-	boardSpace->setOutlineThickness(3);
 }
 
 void MainInterface::manageClick(int x, int y) {
 	Block *block = 0;
 	
 	//test block
+	/* hidden
 	if (x > testBlockButton->getPosition().x &&
 		x < testBlockButton->getPosition().x + testBlockButton->getSize().x &&
 		y > testBlockButton->getPosition().y &&
@@ -50,7 +57,7 @@ void MainInterface::manageClick(int x, int y) {
 			block->printInfo();
 			system("pause");
 		} while (block->rotate() != 0);
-	}
+	}*/
 
 	//load puzzle
 	if (x > loadButton->getPosition().x &&
@@ -65,11 +72,25 @@ void MainInterface::manageClick(int x, int y) {
 			int bWidth = board->getWidth();
 			int bHeight = board->getHeight();
 			int bDepth = board->getDepth();
-			if (bWidth < bHeight) {
+			if (800/(bWidth*bDepth+bDepth-1) > 400/bHeight) {
 				zoomSize = 400/bHeight;
 			}
-			else zoomSize = 400/bWidth;
-			boardSpace->setSize(sf::Vector2f(bWidth*zoomSize, bHeight*zoomSize));
+			else zoomSize = 800/(bWidth*bDepth+bDepth-1);
+			
+			//prepare Board display
+			boardSpace = new sf::RectangleShape[bDepth];
+			for (int i = bDepth-1; i >= 0; i--) {
+				*(boardSpace+i) = sf::RectangleShape(sf::Vector2f(0,0));
+				(boardSpace+i)->setFillColor(sf::Color::Transparent);
+				(boardSpace+i)->setOutlineColor(sf::Color::Black);
+				(boardSpace+i)->setOutlineThickness(3);
+				(boardSpace+i)->setSize(sf::Vector2f(bWidth*zoomSize, bHeight*zoomSize));
+				(boardSpace+i)->setPosition(sf::Vector2f(400-(bWidth+1)*bDepth*zoomSize/2+(bWidth+1)*i*zoomSize + zoomSize/2,
+														200-bHeight*zoomSize/2));
+			}
+			playPauseText.setString("Solve");
+			playPauseText.setPosition(250-playPauseText.getGlobalBounds().width/2, 475-playPauseText.getGlobalBounds().height/2);
+
 			status = PAUSED;
 		}
 	}
@@ -90,9 +111,13 @@ void MainInterface::manageClick(int x, int y) {
 		y < playPauseButton->getPosition().y + playPauseButton->getSize().y)
 	{
 		if (status == RUNNING) {
+			playPauseText.setString("Solve");
+			playPauseText.setPosition(250-playPauseText.getGlobalBounds().width/2, 475-playPauseText.getGlobalBounds().height/2);
 			status = PAUSED;
 		}
 		else if (status == PAUSED) {
+			playPauseText.setString("Pause");
+			playPauseText.setPosition(250-playPauseText.getGlobalBounds().width/2, 475-playPauseText.getGlobalBounds().height/2);
 			status = RUNNING;
 		}
 	}
@@ -110,26 +135,42 @@ void MainInterface::run() {
 		if (status == RUNNING) solver->step(), reps++;
 
 		window->clear(sf::Color(63,63,63,255));
-		window->draw(*boardSpace);
 		//draw board
 		if (solver != 0) {
-			int v = solver->getBoard()->getHeight() - 1;
-			for (v; v >= 0; v--) {
-				int u = solver->getBoard()->getWidth() - 1;
-				for (u; u >= 0; u--) {
-					sf::RectangleShape temp = sf::RectangleShape(sf::Vector2f(zoomSize,zoomSize));
-					temp.setFillColor(solver->colorAt(u,v,0));
-					temp.setOutlineColor(sf::Color::Black);
-					temp.setOutlineThickness(1);
-					temp.setPosition(u*zoomSize, v*zoomSize);
-					window->draw(temp);
+			for (int i = 0; i < solver->getBoard()->getDepth(); i++) window->draw(*(boardSpace+i));
+
+			int w = solver->getBoard()->getDepth() -1;
+			for (w; w >= 0; w--){
+				int v = solver->getBoard()->getHeight() - 1;
+				for (v; v >= 0; v--) {
+					int u = solver->getBoard()->getWidth() - 1;
+					for (u; u >= 0; u--) {
+						sf::RectangleShape temp = sf::RectangleShape(sf::Vector2f(zoomSize,zoomSize));
+						temp.setFillColor(solver->colorAt(u,v,w));
+						temp.setOutlineColor(sf::Color::Black);
+						temp.setOutlineThickness(1);
+
+						temp.setPosition((400-(solver->getBoard()->getWidth()+1)*solver->getBoard()->getDepth()*zoomSize/2+(solver->getBoard()->getWidth()+1)*w*zoomSize + zoomSize/2)+u*zoomSize,
+										200-(solver->getBoard()->getHeight())*zoomSize/2+v*zoomSize);
+						
+						window->draw(temp);
+					}
 				}
 			}
 		}
-		window->draw(*loadButton);
-		window->draw(*testBlockButton);
-		window->draw(*stepButton);
-		window->draw(*playPauseButton);
+		if (status != RUNNING) {
+			window->draw(*loadButton);
+			window->draw(loadText);
+		}
+		// hidden //window->draw(*testBlockButton);
+		if (status == PAUSED) {
+			window->draw(*stepButton);
+			window->draw(stepText);
+		}
+		if (status != WAITING) {
+			window->draw(*playPauseButton);
+			window->draw(playPauseText);
+		}
 		window->display();
 		//std::cout<<reps<<std::endl;
 	}

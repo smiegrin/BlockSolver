@@ -16,10 +16,15 @@ private:
 
 	sf::RenderWindow *window;
 
+	sf::Font textFont;
 	sf::RectangleShape *loadButton;
+	sf::Text loadText;
 	sf::RectangleShape *testBlockButton;
+	sf::Text testText;
 	sf::RectangleShape *stepButton;
+	sf::Text stepText;
 	sf::RectangleShape *playPauseButton;
+	sf::Text playPauseText;
 	sf::RectangleShape *boardSpace;
 
 	sf::Font font;
