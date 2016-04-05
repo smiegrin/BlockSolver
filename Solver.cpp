@@ -61,8 +61,8 @@ void Solver::step() {
 						if ((blocks + currentBlock)->colAt(u + x,v + y,w + z) &&
 							((blocks + i)->colAt(u + x,v + y,w + z) || board->colAt(u+x,v+y,w+z)))
 							conflict = true;
-						if (currentBlock == 0 && blocks->colAt(u+x,v+y,w+z) && board->colAt(u+x,v+y,w+z)) conflict = true;
 					}
+					if (currentBlock == 0 && blocks->colAt(u+x,v+y,w+z) && board->colAt(u+x,v+y,w+z)) conflict = true;
 				}
 			}
 		}
