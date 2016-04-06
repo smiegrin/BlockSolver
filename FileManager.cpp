@@ -15,7 +15,7 @@ std::string FileManager::chooseFile() {
 
     ofn.lStructSize = sizeof(ofn); // SEE NOTE BELOW
     ofn.hwndOwner = NULL;
-    ofn.lpstrFilter = "Block Files (*.blk)\0*.blk\0 Puzzle Files (*.pzl)\0*.pzl\0";
+    ofn.lpstrFilter = "Puzzle Files (*.pzl)\0*.pzl\0";
     ofn.lpstrFile = szFileName;
     ofn.nMaxFile = MAX_PATH;
     ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
@@ -76,7 +76,6 @@ Solver* FileManager::loadPuzzle() {
 	Board* board;
 	Block* blocks;
 	std::ifstream stream;
-
 	stream.open(filename);
 
 	//board size
@@ -101,13 +100,20 @@ Solver* FileManager::loadPuzzle() {
 	blocks = new Block[numOfBlocks];
 
 	std::ifstream blockStream;
+
+	int i = filename.size() - 1;
+	while (filename.at(i) != '\\') {
+		i--;
+	}
+	filename.assign(filename.c_str(),i + 1);
+	std::cout << filename << std::endl;
+
+	std::string blockName = "";
 	for (int i = 0; i < numOfBlocks; i++) {
-		/* figure out filename, first
-		std::getline(stream, filename);
-		if (filename == "\n") std::getline(stream, filename);
-		*(blocks + i) = *FileManager::loadBlock(filename);
-		*/
-		*(blocks + i) = *FileManager::loadBlock();
+		std::getline(stream, blockName);
+		if (blockName == "") std::getline(stream, blockName);
+		std::cout << filename + blockName + ".blk" << std::endl;
+		*(blocks + i) = *FileManager::loadBlock(filename + blockName + ".blk");
 	}
 
 	stream.close();
