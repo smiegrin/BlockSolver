@@ -18,8 +18,9 @@ public:
 	Block* getCurrentBlock();
 	Board* getBoard();
 	bool colAt(int,int,int);
-	void step();
+	bool step();
 	sf::Color colorAt(int,int,int);
+	char getCharAt(int,int,int);
 };
 
 #endif

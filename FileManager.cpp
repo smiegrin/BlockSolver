@@ -121,3 +121,22 @@ Solver* FileManager::loadPuzzle() {
 
 	return new Solver(board, blocks, numOfBlocks);
 }
+
+void FileManager::saveSolution(Solver* solver, int ID) {
+	std::ofstream stream;
+	std::string filename;
+	filename = "Solution";
+	
+	filename += ".sol";
+	stream.open(filename);
+
+	for (int w = 0; w < solver->getBoard()->getDepth(); w++) {
+		for (int v = 0; v < solver->getBoard()->getHeight(); v++) {
+			for (int u = 0; u < solver->getBoard()->getWidth(); u++) {
+				stream << solver->getCharAt(u,v,w) << " ";
+			}
+			stream << "\n";
+		}
+		stream << "Layer " << w << "\n\n";
+	}
+}

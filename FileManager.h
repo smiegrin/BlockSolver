@@ -15,6 +15,7 @@ public:
 	static Block* loadBlock();
 	static Block* loadBlock(std::string);
 	static Solver* loadPuzzle();
+	static void saveSolution(Solver*, int);
 
 };
 

@@ -30,9 +30,15 @@ sf::Color Solver::colorAt(int x, int y, int z) {
 	return sf::Color::Color(0,0,0,0);
 }
 
-void Solver::step() {
+char Solver::getCharAt(int x, int y ,int z) {
+	if (board->colAt(x,y,z)) return '#';
+	for (int i = 0; i < numOfBlocks; i++) if ((blocks + i)->colAt(x,y,z)) return ('a'+i);
+	return ' ';
+}
+
+bool Solver::step() {
 	//std::cout <<currentBlock<<std::endl;
-	if (exhausted) return;
+	if (exhausted) return false;
 	if(currentBlock < numOfBlocks - 1) currentBlock++;
 	else {
 		numOfSolutions++;
@@ -144,7 +150,7 @@ void Solver::step() {
 					if(currentBlock < 0) {
 						exhausted = true;
 						currentBlock = numOfBlocks - 1;
-						return;
+						return false;
 					}
 					(blocks + currentBlock)->setCoordinates(
 						(blocks + currentBlock)->getX() + 1,
@@ -155,4 +161,7 @@ void Solver::step() {
 			}
 		}
 	} while (conflict);
+
+	if (currentBlock == numOfBlocks -1) return true;
+	else return false;
 }

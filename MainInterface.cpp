@@ -132,7 +132,14 @@ void MainInterface::run() {
 			if (event.type == sf::Event::MouseButtonPressed) manageClick(event.mouseButton.x, event.mouseButton.y);
 		}
 
-		if (status == RUNNING) solver->step(), reps++;
+		if (status == RUNNING) {
+			if(solver->step()) {
+				FileManager::saveSolution(solver, reps);
+				//puase solver if the option is implemented and checked
+			}
+			reps++;
+
+		}
 
 		window->clear(sf::Color(63,63,63,255));
 		//draw board
