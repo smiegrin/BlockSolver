@@ -126,7 +126,7 @@ void FileManager::saveSolution(Solver* solver, int ID) {
 	std::ofstream stream;
 	std::string filename;
 	filename = "Solution";
-	
+	filename += std::to_string((long double)(ID));
 	filename += ".sol";
 	stream.open(filename);
 
