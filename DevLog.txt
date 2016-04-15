@@ -98,3 +98,17 @@ algorythm ran fruitless for 4 hours while the second one foud 220 solutions!
 To my dismay, however, there is a bug that has arrisen. I need to keep the
 first block from traveling off the board. Hopefuly it's not something that
 will throw off my algorythm.
+
+April 15 ------------------------------
+Things Are really coming together in the program! I found the bug I mentioned
+in my last entry, and now the program can write solutions in text form onto
+a file where the puzzle and blocks are kept. The naming system might need some
+adjustments that way multiple puzzles can share a directory without steping
+on each-other's "file toes" while solveing. The project is getting to a point
+where I feel I have filled all of my original aspirations for completion, but
+there are all kinds of things that I think this can grow to be. Some are simpler
+than others, like how I would like to make a kind of "Pause on Solution found"
+checkbox. I also would like to make the algorythm a bit more dynamic, like
+finding a way to search into empty-space simplification by multiple levels
+("ok, that block can fill that space, but will that keep other spaces from
+being filled if that's the only case?")
