@@ -25,6 +25,7 @@ private:
 	sf::Text stepText;
 	sf::RectangleShape *playPauseButton;
 	sf::Text playPauseText;
+	sf::Text speedometer;
 	sf::RectangleShape *boardSpace;
 
 	sf::Font font;

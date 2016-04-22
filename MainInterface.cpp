@@ -1,6 +1,8 @@
+#include <ctime>
 #include "MainInterface.h"
 #include "Block.h"
 #include "FileManager.h"
+#include <queue>
 
 MainInterface::MainInterface() {
 	window = new sf::RenderWindow(sf::VideoMode(800,500), "Block Solver", sf::Style::Titlebar | sf::Style::Close);
@@ -39,6 +41,9 @@ MainInterface::MainInterface() {
 	playPauseText = sf::Text("",textFont,30);
 	playPauseText.setColor(sf::Color::White);
 
+	speedometer = sf::Text("Speed :",textFont, 10);
+	speedometer.setColor(sf::Color::White);
+	speedometer.setPosition(sf::Vector2f(5,5));
 }
 
 void MainInterface::manageClick(int x, int y) {
@@ -125,6 +130,10 @@ void MainInterface::manageClick(int x, int y) {
 
 void MainInterface::run() {
 	int reps = 0;
+	clock_t lastClock = clock();
+	std::queue<double long> timeBuffer = std::queue<double long>();
+	for (int i = 0; i < 60; i++) timeBuffer.push(0);
+
 	while (window->isOpen()) {
 		sf::Event event;
 		while (window->pollEvent(event)) {
@@ -139,7 +148,17 @@ void MainInterface::run() {
 			}
 			reps++;
 
+
+			double long temp = timeBuffer.front();
+			timeBuffer.pop();
+			lastClock = clock();
+			timeBuffer.push(lastClock);
+			speedometer.setString("Steps per second: " + std::to_string(60000/(lastClock - temp)));
+
 		}
+		else speedometer.setString("");
+
+		
 
 		window->clear(sf::Color(63,63,63,255));
 		//draw board
@@ -178,6 +197,7 @@ void MainInterface::run() {
 			window->draw(*playPauseButton);
 			window->draw(playPauseText);
 		}
+		window->draw(speedometer);
 		window->display();
 		//std::cout<<reps<<std::endl;
 	}
