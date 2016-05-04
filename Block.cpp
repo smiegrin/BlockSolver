@@ -72,8 +72,6 @@ void Block::printInfo() {
 		}
 		std::cout << "Layer " << (w+1) << std::endl;
 	}
-
-	//for (int i = 0; i < width*height*depth; i++) std::cout << *(space + i) << std::endl;
 }
 
 void Block::setCoordinates(int xCoord, int yCoord, int zCoord) {

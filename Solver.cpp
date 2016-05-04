@@ -109,13 +109,7 @@ bool Solver::step() {
 										}		
 									}
 								}
-								if (found) {
-									//std::cout << "Space " << u << ", " << v << ", " << w <<
-									//	" filled by block #" << j << std::endl;
-									break;
-								}
-								//else std::cout << "Space " << u << ", " << v << ", " << w <<
-								//	" not filled by block #" << j << std::endl;
+								if (found) break;
 							} while ((blocks + j)->rotate()); //check using all rotations
 							(blocks + j)->setCoordinates(0,0,0);
 							if (found) break;							
